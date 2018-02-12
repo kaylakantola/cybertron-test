@@ -118,39 +118,61 @@ export default function() {
   const ex1 =
     'Use map to return a concatenated first and last name of each client.'
   const exercise1 = _ => {
-    return []
+    return map(x => `${x.name.firstName} ${x.name.lastName}`, clients)
   }
 
   const ex2 = 'Use filter to return clients from Wyoming'
   const exercise2 = _ => {
-    return []
+    return filter(x => x.address.state === 'Wyoming', clients)
   }
 
   const ex3 = 'Use reduce to count the number of people with green eyes '
   const exercise3 = _ => {
-    return 0
+    const greenEyedFolks = filter(x => x.eyeColor === 'green', clients)
+    return reduce((acc, val) => acc + 1, 0, greenEyedFolks)
   }
 
   const ex4 = `Use map, filter and reduce with compose to return the full name (as a string) of the female from Wyoming. `
   const exercise4 = _ => {
-    return null
+    return compose(
+      reduce((acc, val) => val, ''),
+      map(x => `${x.name.firstName} ${x.name.lastName}`),
+      filter(x => x.gender === 'female' && x.address.state === 'Wyoming')
+    )(clients)
   }
 
   const ex5 =
     'Use map and filter to return the full address of the clients living in North Carolina'
   const exercise5 = _ => {
-    return []
+    return compose(
+      map(
+        x =>
+          `${x.address.street} ${x.address.city}, ${x.address.state} ${
+            x.address.zip
+          }`
+      ),
+      filter(x => x.address.state === 'North Carolina')
+    )(clients)
   }
 
   const ex6 = 'use filter to remove anyone over the age of 25'
   const exercise6 = _ => {
-    return []
+    return filter(x => x.age <= 25, clients)
   }
 
   const ex7 =
     'use reduce to count the number of males, age 22 - 27, who have green eyes'
   const exercise7 = _ => {
-    return 0
+    return compose(
+      reduce((acc, val) => acc + 1, 0),
+      filter(
+        x =>
+          x.age >= 22 &&
+          x.age <= 27 &&
+          x.gender === 'male' &&
+          x.eyeColor === 'green'
+      )
+    )(clients)
   }
 
   /* tests to validate exercises go here */
